@@ -1,0 +1,8 @@
+{
+	"name": "J.L. Schol",
+	"iban": "NL 98 ABNA 0472322060",
+	"invoice_nr": 4,
+	"declared_months": ["May", "Jun"],
+	"invoice_date": "01/05/2022",
+	"date_format": "%d/%m/%Y"
+}
