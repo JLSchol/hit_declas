@@ -1,30 +1,7 @@
 import tkinter as tk
 from pathlib import Path
-from os import listdir, path
 from dataclasses import dataclass
-import json
-
-class ImportJson:
-    def __init__(self, file_path):
-        self.data = None
-        self.file_path = file_path
-        # if self.file_exists(file_path):
-        #     self.data = self.import_json(file_path)
-
-
-    def file_exists(self, file_path):
-        if path.exists(file_path):
-            return True
-        else:
-            print(f"file {file_path} does not exists!")
-            return False
-
-    def import_json(self):
-        if self.file_exists(self.file_path):
-            with open(self.file_path) as jsonFile:
-                data = json.load(jsonFile)
-                jsonFile.close()
-                return data
+from modules.data_manager import ImportJson, ProjectPaths
 
 class Button:
     def __init__(self, master, text, cb_fun, 
@@ -171,7 +148,7 @@ class App(tk.Frame):
 
         self.init_frame("HIT declarations", 900, 700, "black", "#ff6666", 0.02, 0.02)
 
-        self.grid = Grid(6,10, 0.05, 0.05)
+        self.grid = Grid(10, 20, 0.1, 0.05)
 
         self.initialize_layout()
 
@@ -202,24 +179,11 @@ class App(tk.Frame):
 
 
 if __name__ == "__main__":
-
-    receits_dir = Path.joinpath(Path(__file__).parent, "receits")
-    file_types = (".PNG", ".png", "JPG","jpg","pdf","PDF")
-    files = [Path.joinpath(receits_dir,file) for file in listdir(receits_dir) if file.endswith(file_types)]
-    # print(files)
-
-    config_dir = Path.joinpath(Path(__file__).parent, "config")
-    config_file = Path.joinpath(config_dir, "config.json")
-    config = ImportJson(config_file).import_json()
-    # print(config)
-
-    signature_dir = Path.joinpath(Path(__file__).parent, "signature")
-
-    # print(files)
-
-    # Label()
-
-
+    paths = ProjectPaths()
+    # paths.show_dirs()
+    # paths.show_files()
+    data = ImportJson(paths.personal_details).data
+    # print(data)
 
     root = tk.Tk()
     decla_gui = App(root)
