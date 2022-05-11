@@ -27,7 +27,7 @@ class ProjectPaths:
 
         # get specific files (even if more is present)
         # config files
-        self.personal_details = self.get_filetype(self.config_files, ".json")
+        self.config = self.get_filetype(self.config_files, ".json")
         self.signature = self.get_filetype(self.config_files, image_extenstions)
 
         # receits
@@ -70,10 +70,12 @@ class ProjectPaths:
         print()
 
 
-class ImportJson:
-    def __init__(self, file_path):
+class JsonHelper:
+    def __init__(self, file_path=None):
         self.file_path = file_path
-        self.data = self.import_json(file_path)
+        self.data = None
+        if file_path != None:
+            self.data = self.import_json(self.file_path)
 
 
     def file_exists(self, file_path):
@@ -85,10 +87,15 @@ class ImportJson:
 
     def import_json(self, file_path):
         if self.file_exists(file_path):
-            with open(file_path) as jsonFile:
-                data = json.load(jsonFile)
-                jsonFile.close()
+            with open(file_path) as json_file:
+                data = json.load(json_file)
+                json_file.close()
                 return data
+
+    def write_json(self, dictionary, file_path):
+        with open(file_path, 'w') as json_file:
+            dump = json.dump(dictionary, json_file)
+
 
 
 if __name__ == "__main__":
@@ -96,7 +103,7 @@ if __name__ == "__main__":
     # p.show_dirs()
     # p.show_files()
 
-    data = ImportJson(p.personal_details).data
+    data = JsonHelper(p.config).data
     # print(data)
 
 
