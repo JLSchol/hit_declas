@@ -143,11 +143,13 @@ class App(tk.Frame):
 
     def generate_but(self):
         # get all variables
+
+
         self.new_log = {
         "name": self.name_var.get(),
         "iban": self.iban_var.get(),
         "invoice_nr": self.inv_nr_var.get(),
-        "declared_months_var": "blab bla bla",
+        "declared_months_var": self.declared_months_var.get(),
         "invoice_date": date.today().strftime('%d-%m-%Y'),
         "generated_date_time": date.today().strftime('%d-%m-%Y %H:%M:%S'),
         "tot_excl": 1063.50,
@@ -155,6 +157,8 @@ class App(tk.Frame):
         "tot_incl": 1212.90
         }
         print(self.new_log)
+        JsonHelper().write_json(self.new_log, paths.logs_dir.joinpath(f"invoice{self.inv_nr_var.get()}.json"))
+
 
 
         # write to log
