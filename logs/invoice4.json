@@ -5,7 +5,6 @@
 	"declared_months": ["Mar", "Apr"],
 	"invoice_date": "01/05/2022",
 	"generated_date_time": "01/05/2022 12:07:00",
-	"date_time_format": "%d/%m/%Y %H:%M:%S",
 	"tot_excl": 1063.50,
 	"tot_btw": 149.40,
 	"tot_incl": 1212.90

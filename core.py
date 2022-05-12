@@ -1,5 +1,7 @@
 import tkinter as tk
 from pathlib import Path
+from datetime import date
+
 from tkinter.filedialog import askdirectory, askopenfilename
 from tkinter.messagebox  import showinfo
 
@@ -20,11 +22,14 @@ class App(tk.Frame):
         self.name_var = tk.StringVar(value=self.config["name"])
         self.months_var = tk.StringVar()
         self.iban_var = tk.StringVar(value=self.config["iban"])
-        self.inv_date_var = tk.StringVar()
+        self.inv_date_var = tk.StringVar(value=date.today().strftime('%d-%m-%Y'))
         self.declared_months_var = tk.StringVar()
         self.inv_nr_var = tk.IntVar()
         self.signature_var = tk.StringVar(value=self.config["signature"])
         self.receits_var = tk.StringVar(value=self.config["receits"])
+
+        self.old_log = NotImplemented # try to get latest from logs dir
+        self.new_log = None
         
 
         self.init_frame("HIT declarations", 1280, 720, "black", "#ff6666", 0.02, 0.02)
@@ -44,13 +49,13 @@ class App(tk.Frame):
             relwidth=1-2*margin_x,relheight=1-2*margin_y)
 
     def initialize_layout(self):
-        self.init_invoice_section() # first three rows
+        self.init_details() # first three rows
 
-        self.init_decla_section() # middle section
+        self.init_decla() # middle section
 
-        self.init_conformation_section() # button section
+        self.init_conformation() # button section
 
-    def init_invoice_section(self):
+    def init_details(self):
         # left block
         Label(self.root, "Name", 
             self.grid.x[0], self.grid.y[0], self.grid.cell_w, self.grid.cell_h)
@@ -93,11 +98,13 @@ class App(tk.Frame):
         Button(self.root, "save settings as default", self.save_settings_but,
             self.grid.x[-2], self.grid.y[2], 2*self.grid.cell_w, self.grid.cell_h)
 
-    def init_decla_section(self):
+    def init_decla(self):
         pass
 
-    def init_conformation_section(self):
-        pass
+    def init_conformation(self):
+        
+        Button(self.root, "generate", self.generate_but,
+            self.grid.x[14], self.grid.y[19], self.grid.cell_w, self.grid.cell_h)
 
 
     ##CALLBACKS
@@ -129,10 +136,34 @@ class App(tk.Frame):
         # popop textbox
         name = f"Name: \n{self.name_var.get()}\n\n"
         iban = f"IBAN: \n{self.iban_var.get()}\n\n"
-        signature = f"signature: \n{self.signature_var.get()}\n\n"
-        receits = f"receits dir: \n{self.receits_var.get()}"
+        signature = f"Signature image: \n{self.signature_var.get()}\n\n"
+        receits = f"Receits directory: \n{self.receits_var.get()}"
         text = name + iban + signature + receits
         showinfo("settings saved as default", text)
+
+    def generate_but(self):
+        # get all variables
+        self.new_log = {
+        "name": self.name_var.get(),
+        "iban": self.iban_var.get(),
+        "invoice_nr": self.inv_nr_var.get(),
+        "declared_months_var": "blab bla bla",
+        "invoice_date": date.today().strftime('%d-%m-%Y'),
+        "generated_date_time": date.today().strftime('%d-%m-%Y %H:%M:%S'),
+        "tot_excl": 1063.50,
+        "tot_btw": 149.40,
+        "tot_incl": 1212.90
+        }
+        print(self.new_log)
+
+
+        # write to log
+
+        # generate decla pdf
+
+        # generate receits pdf
+
+
 
     # trace variables
     def name_cb(self, *args):
